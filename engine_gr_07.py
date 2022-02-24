@@ -55,7 +55,7 @@ def create_map(lenght, height, player_1, player_2, food):
     specification : Louise Delpierre (v1 17/02/2022)
     """
 
-def attack(player_A, player_B, order): 
+def attack(player_A, player_B, orders): 
     """ 
     Attacks the wolves of the other player 
 
@@ -63,7 +63,7 @@ def attack(player_A, player_B, order):
     ----------
     player_A : wolves of the player who attacks (dict)
     player_B : wolves of the player who is attacked (dict)
-    order : orders of the player who attacks (str)
+    orders : orders of the player who attacks (str)
 
     Returns
     --------
@@ -76,13 +76,13 @@ def attack(player_A, player_B, order):
     specification : Eline Mota (v.1 17/02/2022) 
     """
 
-def pacification(player_A, player_B, order):
+def pacification(player_A, player_B, orders):
      """ 
     Pacification of the wolves of the other player 
 
     Parameters
     ----------
-    order : orders of the player who pacifies (str)
+    orders : orders of the player who attacks (str)
 
     Returns
     --------
@@ -255,7 +255,7 @@ def turn_list(order):
 
     Return:
     -------
-    order: the order turned into a list (list)
+    case: the order turned into a list (list)
 
     Version:
     --------
