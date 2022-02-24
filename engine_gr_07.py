@@ -255,7 +255,7 @@ def turn_list(order):
 
     Return:
     -------
-    case: the order turned into a list (list)
+    order: the order turned into a list (list)
 
     Version:
     --------
