@@ -16,16 +16,15 @@ def attack(player_A, player_B, orders):
     specification : Eline Mota (v.1 17/02/2022) 
     '''
     # varible de test/ modifiable 
-    order = orders  # prendre la fonction donnant les ordres
-    player_A [(x,y)[life]] = (player_A [(x,y)[life]] - bonus ) - attack # énergie loup au debut du tour 
-    if '*' in orders: # lire l'ordre et voir si * si trouve 
+    order = turn_list(orders)  # prensdre la fonction donnant les ordres
+    player_A [(x,y)[life]] = (player_A [(x,y)[life]] - #bonus ) - attack # énergie loup au debut du cours 
+    if '*' in order: # lire l'ordre et voir si * si trouve 
         # voir ce qui se passe sur blessed 
         player_A[(x,y)] = int(player_B [(x,y)[life]] / 0.1) # quand un loup attaque, perte 1/10 de son énergie 
 
     if player_A [(x,y)[life]] == 0  or player_B [(x,y)[life]] == 0
-        player_A [(x,y)] == 'H'
-        player_B [(x,y )]== 'H' # voir sur blessed 
-
+        player_A [(x,y)] == 'humain'
+        player_B [(x,y )]== 'humain' # voir sur blessed 
 
 
 
