@@ -82,7 +82,7 @@ def pacification(player_A, player_B, orders):
 
     Parameters
     ----------
-    orders : orders of the player who attacks (str)
+    orders : orders of the player who pacifies (str)
 
     Returns
     --------
