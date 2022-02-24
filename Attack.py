@@ -14,6 +14,7 @@ def attack(player_A, player_B, orders):
     Versions
     --------
     specification : Eline Mota (v.1 17/02/2022) 
+    implementation : Louise Delpierre (v.1 24/02/2022)
     '''
     # varible de test/ modifiable 
     order = turn_list(orders)  # prensdre la fonction donnant les ordres
