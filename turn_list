@@ -13,4 +13,3 @@ def turn_list(order):
     """
     order = order.split(" ")
     return order
-
