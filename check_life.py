@@ -1,18 +1,18 @@
-def pacification(player_A, player_B, orders):
-     """ 
-    Pacification of the wolves of the other player 
-    Parameters
-    ----------
-    player_A : the player who wants to pacify (dict)
-    player_B : the player who is pacify (dict) 
-    orders : orders of the player who attacks (str)
-    Returns
+def check_food(food, case):
+    """Check if there is food on a case
+    
+    Parameters:
+    -----------
+    case: a case on the map
+    food: food placed on the map
+    
+    Return:
+    -------
+    Result: True if there is food on a case, False otherwise
+    
+    Version:
     --------
-    pacified: pacified wolves of player_B (list) 
-    Versions
-    --------
-    specification : Aline Boulanger (v.1 17/02/2022) 
-    implementation : Aline Boulanger (v.1 2/03/2022) 
+    specification: Eline Mota (v.1 19/02/2022)
     """
 
     coord = case.split("-")
