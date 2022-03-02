@@ -147,6 +147,8 @@ def pacification(player_A, player_B, orders):
 
     Parameters
     ----------
+    player_A : the player who wants to pacify (dict)
+    player_B : the player who is pacify (dict) 
     orders : orders of the player who attacks (str)
 
     Returns
