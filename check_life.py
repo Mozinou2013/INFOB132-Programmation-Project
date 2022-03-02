@@ -19,7 +19,7 @@ def check_life(player_A, case):
     y_A = int(coord[1])
 
     if player_A[(x_A, y_A)]["life"] == 0 :
-       player_A[(x_A, y_A)] = "human" 
+       player_A[(x_A, y_A)] = "human"
     else :
        player_A[(x_A, y_A)] = player_A[(x_A, y_A)]
 
