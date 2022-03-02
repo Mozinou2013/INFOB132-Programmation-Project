@@ -1,18 +1,17 @@
-def check_food(food, case):
-    """Check if there is food on a case
-    
+def check_life(player_A, case):
+    """Check if a wolf has zero life
     Parameters:
-    -----------
-    case: a case on the map
-    food: food placed on the map
-    
+    ----------
+    player_A: wolves of the player playing (dict)
+    case: place of the wolf we want to check (tuple)
     Return:
     -------
-    Result: True if there is food on a case, False otherwise
-    
-    Version:
-    --------
+    Result: True if the wolf has zero life, False otherwise (bool)
+    Versions:
+    ---------
     specification: Eline Mota (v.1 19/02/2022)
+    implementation : Aline Boulanger (v.1 2/03/2022)
+
     """
 
     coord = case.split("-")
