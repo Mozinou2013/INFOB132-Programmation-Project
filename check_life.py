@@ -10,7 +10,7 @@ def check_life(player_A, case):
     Versions:
     ---------
     specification: Eline Mota (v.1 19/02/2022)
-    implementation : Aline Boulanger (v.1 2/03/2022)
+    implementation : Louise Delpierre (v.1 2/03/2022)
 
     """
 
