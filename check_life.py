@@ -10,18 +10,17 @@ def check_life(player_A, case):
     Versions:
     ---------
     specification: Eline Mota (v.1 19/02/2022)
-    implementation : Louise Delpierre (v.1 2/03/2022)
+    implementation : Aline Boulanger (v.1 2/03/2022)
 
     """
-
-    coord = case.split("-")
-    x_A = int(coord[0])
-    y_A = int(coord[1])
+    x_A = int(case[0])
+    y_A = int(case[1])
 
     if player_A[(x_A, y_A)]["life"] == 0 :
-       player_A[(x_A, y_A)] = "human"
+       player_A[(x_A, y_A)]["type"] = "human" 
     else :
-       player_A[(x_A, y_A)] = player_A[(x_A, y_A)]
+       player_A[(x_A, y_A)]["type"] = player_A[(x_A, y_A)]["type"] 
+       
+    return player_A
 
-    return player_A[(x_A, y_A)]
-
+#check_life (player_1, (2,2))
