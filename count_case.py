@@ -25,7 +25,7 @@ def count_cases(e1, e2):
     y = y_2 - y_1
     distance_y = abs(y)
 
-    distance = distance_x + distance_y
+    distance = (distance_x, distance_y)
     return distance 
 
 
