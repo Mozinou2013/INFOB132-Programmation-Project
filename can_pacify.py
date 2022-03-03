@@ -1,5 +1,3 @@
-player_1 = {(2,2): {'type': 'alpha', 'life': 100}, (1,1): {'type': 'omega', 'life': 30}}
-
 def can_pacify(player_A, x_A, y_A):
     """Check if a wolf has enough energy to pacify.
     Parameters:
