@@ -19,7 +19,7 @@ def update_life(player_A, x, y):
     if life > 60 and life < 100:
         print(term.move_xy(x,y) + colore + term.on_darkolivegreen3 + type)
     elif life <= 60 and life > 30:
-        print(term.move_xy(x,y) + colore + term.on_coral1 + type)
+        print(term.move_xy(x,y) + colore + term.on_yellow + type)
     elif life <= 30 and life > 0:
         print(term.move_xy(x,y) + colore + term.on_orangered + type)
     elif life == 0:
