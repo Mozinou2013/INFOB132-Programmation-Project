@@ -53,28 +53,30 @@ def create_map(width, height, player_1, player_2, food):
             x, y = trans_coord(x,y)
             print(term.move_xy(x, y) +'L')
     for key in food:
-        if food[key] == 10:
+        if food[key]['type'] == 'berries':
             x = key[0]
             y = key[1]
             x, y = trans_coord(x,y)
             print(term.move_xy(x,y) +'b')
-        elif food[key] == 30:
+        elif food[key]['type'] == 'apples':
             x = key[0]
             y = key[1]
             x, y = trans_coord(x,y)
             print(term.move_xy(x,y) + 'a')
-        elif food[key] == 50:
+        elif food[key]['type'] == 'mice':
             x = key[0]
             y = key[1]
             x, y = trans_coord(x,y)
             print(term.move_xy(x,y) + 'm')
-        elif food[key] == 100:
+        elif food[key]['type'] == 'rabbits':
             x = key[0]
             y = key[1]
             x, y = trans_coord(x,y)
             print(term.move_xy(x,y) + 'r')
-        else:
+        elif food[key]['type'] == 'deers':
             x = key[0]
             y = key[1]
             x, y = trans_coord(x,y)
             print(term.move_xy(x,y) + 'd')
+        else:
+            raise ValueError('something is wrong with the file')
