@@ -9,7 +9,8 @@ def bonus(player_A):
     power_up_wolves: wolves with their bonus (dict)
     Versions
     --------
-    specification : Aurélie Genot (v.1 17/02/2022) 
+    specification : Aurélie Genot (v.1 17/02/2022)
+    implementation : Louise Delpierre (v.1 3/03/2022) 
     """
 
     
