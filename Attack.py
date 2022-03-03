@@ -14,20 +14,15 @@ def attack(player_A, player_B, orders):
     --------
     specification : Eline Mota (v.1 17/02/2022)
     implementation: Louise Delpierre, Aline Boulanger (v.1 24/02/2022)
+    Eline Mota (v.2, 03/03/2022)
     '''
-
-    
-    #bonus = #fct bonus 
-    # varible de test/ modifiable 
-    order = turn_list(orders)  # prendre la fonction donnant les ordres
+    order = turn_list(orders)  
 
     print('order', order)
     for elements in order:
         
-        if '*' in elements: # lire l'ordre et voir si * si trouve 
-            # voir ce qui se passe sur blessed POUR LA VIE 
+        if '*' in elements:
             coords = elements.split (":*")
-            
             
             i = 0
             for coord in coords:
@@ -42,20 +37,13 @@ def attack(player_A, player_B, orders):
                     y_B = int(coord[1])
                 
 
-            if player_A [(x_A,y_A)]["life"] == 0 :
-                player_A [(x_A,y_A)] == 'humain' # voir sur blessed
+            if check_life(player_A, (x_A, y_A)):
+                print(term.move_xy(50, 100) + 'your wolf has zero life, you cannot attack')
 
             else :
-                vie = player_A[(x_A,y_A)]["life"] # quand un loup attaque, perte 1/10 de son énergie
+                vie = player_A[(x_A,y_A)]["life"]
                 vie = vie/10
-                print(vie)
                 player_B [(x_B,y_B)]["life"] -= vie
-                
-
-            if player_B [(x_B,y_B)]["life"] == 0 :
-                player_B [(x_B,y_B)] == 'humain' # voir sur blessed
-        #player_A [(x_A, y_A)["life"]] = (player_A[(x_A,y_A)["life"]]) - attack # énergie loup au debut du cours ATTENTION - bonus
+                update_life(player_B, x_B, y_B)
          
     return player_A, player_B
-
-print(attack (player_1,player_2, "2-2:*7-4 10-10:pacify"))
