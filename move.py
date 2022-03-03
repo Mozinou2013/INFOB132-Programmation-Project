@@ -17,24 +17,19 @@ def move(player_A, orders):
     implementation : Aurélie Genot (v.1 03/03/2022)
 
     """
-    order = turn_list(orders)
 
+    order = turn_list(orders)
     for elements in order:
         
-        if '@' in elements: # Pour chaque @ dans l'ordre  
-            coords = elements.split (":*")
+        # ne fonctionne que si un déplacement (parce que coords ne retourne pas plusieurs pos) 
+        if '@' in elements: # Pour chaque @ dans l'ordre
+            coords = elements.split (":@") #Met en liste les éléments entourant @ 
+            actual_pos = coords[0]
+            future_pos = coords[1]
+        
+        return coords
             
+move(player_A, orders)
             
-            i = 0
-            for coord in coords:
-                i += 1
-
-                coord = coord.split ("-")
-                if i == 1:
-                    x_A = int(coord[0])
-                    y_A = int(coord[1])
-                elif i == 2 :
-                    x_B = int(coord[0])
-                    y_B = int(coord[1])
-
-## 1) Vérifier que le déplacement est possible (sur le plateau + )
+## 1) Vérifier que le déplacement est possible (in_map)
+## utiliser count_case
