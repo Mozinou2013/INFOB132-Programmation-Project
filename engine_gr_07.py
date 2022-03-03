@@ -50,12 +50,16 @@ def create_map(lenght, height, player_1, player_2, food):
     player_2: wolves of the player 2 (dict)
     food : food on the map (dict)
 
+    Returns: 
+    -------- 
+    map : map of the game printed (str) 
+
     Versions
     --------
     specification : Louise Delpierre (v1 17/02/2022)
     """
 
-def attack(player_A, player_B, order): 
+def attack(player_A, player_B, orders): 
     """ 
     Attacks the wolves of the other player 
 
@@ -63,7 +67,7 @@ def attack(player_A, player_B, order):
     ----------
     player_A : wolves of the player who attacks (dict)
     player_B : wolves of the player who is attacked (dict)
-    order : orders of the player who attacks (str)
+    orders : orders of the player who attacks (str)
 
     Returns
     --------
@@ -76,13 +80,15 @@ def attack(player_A, player_B, order):
     specification : Eline Mota (v.1 17/02/2022) 
     """
 
-def pacification(player_A, player_B, order):
+def pacification(player_A, player_B, orders):
      """ 
     Pacification of the wolves of the other player 
 
     Parameters
     ----------
-    order : orders of the player who pacifies (str)
+    player_A : wolves of the player who attacks (dict)
+    player_B : wolves of the player who is attacked (dict)
+    orders : orders of the player who attacks (str)
 
     Returns
     --------
@@ -100,7 +106,7 @@ def bonus(player_A):
 
     Parameters
     ----------
-    player_A : wolves of the player who plays (dict) # peut-être juste utilisé player 
+    player_A : wolves of the player who plays (dict)
 
     Returns
     --------
@@ -246,16 +252,16 @@ def check_food(food, case):
     specification: Eline Mota (v.1 19/02/2022)"""
 
 
-def turn_list(order):
-    """Turn an order into a list
+def turn_tuple(order):
+    """Turn an order into a tuple
 
     Parameters:
     -----------
-    order: the order that a player has given (list)
+    order: the order that a player has given
 
     Return:
     -------
-    case: the order turned into a list (list)
+    case: the order turned into a tuple (tuple)
 
     Version:
     --------
