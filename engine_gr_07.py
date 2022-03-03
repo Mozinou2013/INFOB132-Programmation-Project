@@ -232,7 +232,7 @@ def eat(food, player_A, orders):
     specifiaction: Aline Boulanger (v.1 19/02/2022)
 
     """
-def in_map(case):
+def in_map(case): ##width - height
     """Check if the case is well in the map
     Parameters:
     -----------
