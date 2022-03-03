@@ -1,23 +1,3 @@
-orders = "2-2:<2-3 10-10:pacify"
-food = {(4,4) : 10, (1, 1) : 50}
-player_1 = {(2,2): {'type': 'alpha', 'life': 90}, (1,1): {'type': 'omega', 'life': 100}}
-
-def turn_list(orders):
-    """Turn an order into a list
-    Parameters:
-    -----------
-    order: the order that a player has given (list)
-    Return:
-    -------
-    order: the order turned into a list (list)
-    Version:
-    --------
-    specification: Aurélie Genot (v.1 19/02/2022)
-    implementation: Aurélie Genot (v.1 24/02/2022) 
-    """
-    order = orders.split(" ")
-    return order
-
 def eat(food, player_A, orders):
     """
     Add energy point to a wolf depending on what he eats
