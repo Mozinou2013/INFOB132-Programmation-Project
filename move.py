@@ -1,5 +1,3 @@
-from turtle import width
-
 
 def move(player_A, orders):
     """
@@ -28,8 +26,7 @@ def move(player_A, orders):
         # PB FONCTIONNE SI 1 DEPLACEMENT (parce que coords ne retourne pas plusieurs pos) 
         if '@' in elements: # Pour chaque @ dans l'ordre
             coords = elements.split (":@") #Met en liste les éléments entourant @ 
-    
-            
+<
             i = 0
             for coord in coords:
                 i += 1

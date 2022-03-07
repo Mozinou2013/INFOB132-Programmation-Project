@@ -35,9 +35,9 @@ def eat(food, player_A, orders):
                     coords_food = (x_food, y_food) #(2,3)
             for key in food :
                 if coords_food == key :
-                    while player_A[(x_A, y_A)]["life"] < 100 and food[key] > 0 :
+                    while player_A[(x_A, y_A)]["life"] < 100 and food[x_food, y_food]["life"]  > 0 :
                         player_A[(x_A, y_A)]["life"] += 1
-                        food[key] -= 1
+                        food[x_food, y_food]["life"] -= 1
 
     return food, player_A 
 
