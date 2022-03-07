@@ -49,12 +49,14 @@ def move(player_A, orders):
 
             # 2ème étape: vérifie que c'est un déplacement d'une case maximumu (avec count_case)
                 count_case(actual_pos, future_pos)  
-                if distance_x <=1 distance and distance_y <=1: 
+                if distance_x <=1 and distance_y <=1: 
                     
                    #3ème étape: faire le déplacement 
                     case_deleted = player_A.pop(actual_pos) # Supprimer l'emplacement actuel
                     value_case_deleted = case_deleted
                     player_A[(future_pos)] = value_case_deleted # Créer le nouvel emplacement
+
+    return player_A
                     
 
 
