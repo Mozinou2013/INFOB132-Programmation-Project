@@ -9,11 +9,13 @@ def count_cases(e1, e2):
     
     Returns:
     --------
-    distance: the number of cases that separes two things on the board (int)
+    distance_x: the number of cases X that separes two things on the board (int)
+    distance_y : the number of cases Y that separes two things on the board (int)
     
     Versions:
     ----------
     specification: Louise Delpierre (v.1 19/02/2022)
+    specification: Aurélie Genot (v.2 07/03/2022)
     implementation : Aline Boulanger (v.1 3/03/2022)
     """
     x_1 = e1[0]
@@ -26,8 +28,8 @@ def count_cases(e1, e2):
     y = y_2 - y_1
     distance_y = abs(y)
 
-    distance = (distance_x, distance_y)
-    return distance 
+    return distance_x
+    return distance_y
 
 
 print(count_cases ((4,4), (1,3)))

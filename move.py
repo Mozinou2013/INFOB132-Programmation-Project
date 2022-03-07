@@ -1,3 +1,6 @@
+from turtle import width
+
+
 def move(player_A, orders):
     """
     Move a wolf on the board
@@ -15,21 +18,44 @@ def move(player_A, orders):
     --------
     specification: Eline Mota (v.1 19/02/2022)
     implementation : Aurélie Genot (v.1 03/03/2022)
+    implementation: Aurélie Genot (v.2 07/03/2022)
 
     """
 
     order = turn_list(orders)
     for elements in order:
-        
-        # ne fonctionne que si un déplacement (parce que coords ne retourne pas plusieurs pos) 
+
+        # PB FONCTIONNE SI 1 DEPLACEMENT (parce que coords ne retourne pas plusieurs pos) 
         if '@' in elements: # Pour chaque @ dans l'ordre
             coords = elements.split (":@") #Met en liste les éléments entourant @ 
-            actual_pos = coords[0]
-            future_pos = coords[1]
-        
-        return coords
+    
             
+            i = 0
+            for coord in coords:
+                i += 1
+
+                coord = coord.split ("-") # Pour récupérer les coordonnées X et Y 
+                if i == 1:
+                    actual_x = int(coord[0])
+                    actual_y = int(coord[1])
+                elif i == 2 :
+                    future_x = int(coord[0])
+                    future_y = int(coord[1])
+        
+                actual_pos = (actual_x, actual_y)
+                future_pos = (future_x, future_y)
+
+            # 1ère étape: Regarder si déplacement possible (ckeck_case et in_map) 
+
+            if check_case (future_pos, player_A) == False and in_map (future_pos, width, height)
+               
+
+            # 2ème étape: utiliser count_case 
+                count_case (actual_pos, future_pos)  
+                if distance_x <=1 and distance_y <=1: #sinon le déplacement voulu est de +1 case
+                   
+                   #3ème étape: faire le déplacement 
+
+
 move(player_A, orders)
             
-## 1) Vérifier que le déplacement est possible (in_map)
-## utiliser count_case
