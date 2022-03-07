@@ -44,13 +44,13 @@ def move(player_A, orders):
 
             # 1ère étape: Regarder si déplacement possible (ckeck_case et in_map) 
 
-            if check_case (future_pos, player_A) == False and in_map (future_pos, width, height)
+            if check_case (future_pos, player_A) == False and in_map (future_pos, width, height):
                
 
             # 2ème étape: utiliser count_case 
                 count_case (actual_pos, future_pos)  
                 if distance_x <=1 and distance_y <=1: #sinon le déplacement voulu est de +1 case
-                   
+                
                    #3ème étape: faire le déplacement 
 
 
