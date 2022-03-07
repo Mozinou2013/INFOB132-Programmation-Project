@@ -26,7 +26,7 @@ def move(player_A, orders):
         # PB FONCTIONNE SI 1 DEPLACEMENT (parce que coords ne retourne pas plusieurs pos) 
         if '@' in elements: # Pour chaque @ dans l'ordre
             coords = elements.split (":@") #Met en liste les éléments entourant @ 
-<
+
             i = 0
             for coord in coords:
                 i += 1
@@ -44,14 +44,18 @@ def move(player_A, orders):
 
             # 1ère étape: Regarder si déplacement possible (ckeck_case et in_map) 
 
-            if check_case (future_pos, player_A) == False and in_map (future_pos, width, height):
+            if check_case(future_pos, player_A) == False and in_map(future_pos, width, height) == True:
                
 
-            # 2ème étape: utiliser count_case 
-                count_case (actual_pos, future_pos)  
-                if distance_x <=1 and distance_y <=1: #sinon le déplacement voulu est de +1 case
-                
+            # 2ème étape: vérifie que c'est un déplacement d'une case maximumu (avec count_case)
+                count_case(actual_pos, future_pos)  
+                if distance_x <=1 distance and distance_y <=1: 
+                    
                    #3ème étape: faire le déplacement 
+                    case_deleted = player_A.pop(actual_pos) # Supprimer l'emplacement actuel
+                    value_case_deleted = case_deleted
+                    player_A[(future_pos)] = value_case_deleted # Créer le nouvel emplacement
+                    
 
 
 move(player_A, orders)
