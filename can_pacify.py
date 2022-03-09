@@ -25,4 +25,4 @@ def can_pacify(player_A, x_A, y_A):
     else :
         return False 
 
-print(can_pacify(player_1, 1, 1))
+print(can_pacify(player_1, x_A, y_A))

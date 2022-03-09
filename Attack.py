@@ -41,9 +41,9 @@ def attack(player_A, player_B, orders):
                 print(term.move_xy(50, 100) + 'your wolf has zero life, you cannot attack')
 
             else :
-                vie = player_A[(x_A,y_A)]["life"]
-                vie = vie/10
-                player_B [(x_B,y_B)]["life"] -= vie
+                lifew = player_A[(x_A,y_A)]["life"]
+                lifew = lifew/10
+                player_B [(x_B,y_B)]["life"] -= lifew
                 update_life(player_B, x_B, y_B)
          
     return player_A, player_B

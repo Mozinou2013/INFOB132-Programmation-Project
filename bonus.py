@@ -44,6 +44,8 @@ def bonus(player_A, case):
     --------
     specification : Aurélie Genot (v.1 17/02/2022) 
     '''
+    
+    
     if count_cases < 2 : #Erreur là aussi car < n'est pas supporté si on met un fct avant et un entier ap
         for key in player_A :
             if player_A [key]['type'] == 'loup': # si le type du loup = loup 
