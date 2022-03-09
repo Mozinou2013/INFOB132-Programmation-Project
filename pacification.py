@@ -12,5 +12,5 @@ def pacification(player_A, player_B, orders):
     Versions
     --------
     specification : Aline Boulanger (v.1 17/02/2022) 
-    implementation : (v.1 5/03/2022)
+    implementation : Louise Delpierre (v.1 5/03/2022)
     """

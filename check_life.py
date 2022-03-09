@@ -13,9 +13,8 @@ def check_life(player_A, case):
     Versions:
     ---------
     specification: Eline Mota (v.1 19/02/2022)
-    implementation: Aline Boulanger, Louise Delpierre (v.1 02/03/2022
-    Eline Mota (v.2 03/03/2022)
-
+    implementation: Aline Boulanger, Louise Delpierre (v.1 02/03/2022)
+    
     """
     if player_A[case]['life'] == 0:
         return True

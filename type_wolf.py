@@ -9,7 +9,15 @@ def type_wolf(player_A, x, y):
     
     Return:
     -------
-    type: type of the wolf (A, O or L)"""
+    type: type of the wolf (A, O or L)
+
+    Version:
+    --------
+    specification: Louise Delpierre (v.1 19/02/2022)
+    implementation: Eline Mota (v.1 3/03/2022) 
+
+    """
+
     type = player_A[(x,y)]['type']
     if type == 'alpha':
         return 'A'
