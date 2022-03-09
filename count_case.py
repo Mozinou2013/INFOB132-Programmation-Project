@@ -28,8 +28,8 @@ def count_cases(e1, e2):
     y = y_2 - y_1
     distance_y = abs(y)
 
-    return distance_x
-    return distance_y
+    return distance_x, distance_y
+
 
 
 print(count_cases ((4,4), (1,3)))

@@ -1,3 +1,6 @@
+from turtle import distance
+
+
 player_1 = {(2,2): {'type': 'alpha', 'life': 100}, (1,1): {'type': 'omega', 'life': 100}}
 
 def count_cases(e1, e2):
@@ -11,11 +14,14 @@ def count_cases(e1, e2):
     
     Returns:
     --------
-    distance: the number of cases that separes two things on the board (int)
+    distance_x: the number of cases X that separes two things on the board (int)
+    distance_y : the number of cases Y that separes two things on the board (int)
     
     Versions:
     ----------
     specification: Louise Delpierre (v.1 19/02/2022)
+    specification: Aurélie Genot (v.2 07/03/2022)
+    implementation : Aline Boulanger (v.1 3/03/2022)
     """
     x_1 = e1[0]
     y_1 = e1[1]
@@ -27,8 +33,7 @@ def count_cases(e1, e2):
     y = y_2 - y_1
     distance_y = abs(y)
 
-    distance = (distance_x, distance_y)
-    return distance 
+    return distance_x, distance_y 
 
 def bonus(player_A, case):
     '''
@@ -36,25 +41,31 @@ def bonus(player_A, case):
     Parameters
     ----------
     player_A : wolves of the player who plays (dict) # peut-être juste utilisé player
-    case : the case of the wolf (tuple)  
+    case : the case of the wolf who wants to have a bonus (tuple)  
+
     Returns
     --------
     power_up_wolves: wolves with their bonus (dict)
     Versions
     --------
     specification : Aurélie Genot (v.1 17/02/2022) 
+    implementation : Louise Delpierre (v.1 9/03/2022)
     '''
+
+    for key in player_A :
+        count_cases(case, player_A[key])
+        distance_x = distance[0]
+
     
-    
-    if count_cases < 2 : #Erreur là aussi car < n'est pas supporté si on met un fct avant et un entier ap
-        for key in player_A :
-            if player_A [key]['type'] == 'loup': # si le type du loup = loup 
-                case1 = 10 # ajoute 10 
-    elif count_cases < 4 :
-        for key in player_A :
-            if player_A [key]['type'] == 'alpha': # si le type du loup = alpha 
-                case2 =  30 # il ajoute 30 
-    case = case1 + case2   # il faut calculer aussi le nombre d'itération !!  Erreur ici 
+        if distance_x < 2 and distance_y < 2 : 
+            for key in player_A :
+                if player_A [key]['type'] == 'loup': # si le type du loup = loup 
+                    bonus1 = 10 # ajoute 10 
+        elif distance_x < 4 and distance_y < 4 :
+            for key in player_A :
+                if player_A [key]['type'] == 'alpha': # si le type du loup = alpha 
+                    bonus2 =  30 # il ajoute 30 
+        bonus = bonus1 + bonus2   # il faut calculer aussi le nombre d'itération !!  Erreur ici 
 
 loup = bonus (player_1,(2,2))  
 # faire disparaitre le bonus   
