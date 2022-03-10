@@ -1,10 +1,3 @@
-from count_cases import count_cases
-from turn_list import turn_list
-
-orders = "2-2:<6-2 10-10:pacify"
-player_1 = {(6,2): {'type': 'alpha', 'life': 90}, (1,1): {'type': 'omega', 'life': 100}}
-
-
 def can_eat (player_A, orders) :
     """
     Parametres :
@@ -47,5 +40,3 @@ def can_eat (player_A, orders) :
         return True
     else : 
         return False 
-print(can_eat(player_1, orders)) 
-                

@@ -29,4 +29,4 @@ def count_cases(e1, e2):
     distance = (distance_x, distance_y)
     return distance
 
-print(count_cases ((4,4), (1,3)))
+
