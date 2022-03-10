@@ -9,8 +9,7 @@ def count_cases(e1, e2):
     
     Returns:
     --------
-    distance_x: the number of cases X that separes two things on the board (int)
-    distance_y : the number of cases Y that separes two things on the board (int)
+    distance: the difference of the two positions (with the X and the Y) (tuple)
     
     Versions:
     ----------
@@ -27,9 +26,7 @@ def count_cases(e1, e2):
     distance_x = abs(x)
     y = y_2 - y_1
     distance_y = abs(y)
-
-    return distance_x, distance_y
-
-
+    distance = (distance_x, distance_y)
+    return distance
 
 print(count_cases ((4,4), (1,3)))

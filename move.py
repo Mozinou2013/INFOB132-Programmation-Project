@@ -1,4 +1,5 @@
 
+
 def move(player_A, orders):
     """
     Move a wolf on the board
@@ -48,7 +49,9 @@ def move(player_A, orders):
                
 
             # 2ème étape: vérifie que c'est un déplacement d'une case maximumu (avec count_case)
-                count_case(actual_pos, future_pos)  
+                distance = count_cases(actual_pos, future_pos) 
+                distance_x = distance[0]
+                distance_y = distance[1] 
                 if distance_x <=1 and distance_y <=1: 
                     
                    #3ème étape: faire le déplacement 
