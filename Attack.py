@@ -84,7 +84,7 @@ def attack(player_A, player_B, orders):
     Versions
     --------
     specification : Eline Mota (v.1 17/02/2022)
-    implementation: Louise Delpierre, Aline Boulanger (v.1 24/02/2022)
+    implementation: Aline Boulanger (v.1 24/02/2022)
     implementation : Eline Mota (v.2, 03/03/2022)
     '''
 
