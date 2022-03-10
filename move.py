@@ -1,5 +1,3 @@
-
-
 def move(player_A, orders):
     """
     Move a wolf on the board
@@ -40,8 +38,8 @@ def move(player_A, orders):
                     future_x = int(coord[0])
                     future_y = int(coord[1])
         
-                actual_pos = (actual_x, actual_y)
-                future_pos = (future_x, future_y)
+            actual_pos = (actual_x, actual_y)
+            future_pos = (future_x, future_y)
 
             # 1ère étape: Regarder si déplacement possible (ckeck_case et in_map) 
 
