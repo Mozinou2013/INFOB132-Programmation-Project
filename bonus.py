@@ -32,7 +32,7 @@ def count_cases(e1, e2):
     distance = (distance_x, distance_y)
     return distance
 
-def bonus(player_A, case, count_cases):
+def bonus(player_A, case):
     '''
     Get a bonus to the wolves of the player who is playing 
     Parameters
@@ -68,7 +68,7 @@ def bonus(player_A, case, count_cases):
     return bonusTotal 
 
  
-print(bonus(player_1,(2,2), count_cases))
+print(bonus(player_1,(2,2))
     
 
 # faire disparaitre le bonus  
