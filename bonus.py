@@ -39,7 +39,6 @@ def bonus(player_A, case):
     ----------
     player_A : wolves of the player who plays (dict) # peut-être juste utilisé player
     case : the case of the wolf who wants to have a bonus (tuple)  
-
     Returns
     --------
     power_up_wolves: wolves with their bonus (dict)
@@ -52,20 +51,21 @@ def bonus(player_A, case):
     bonusA = 0
 
     for key in player_A :
-        distance = count_cases (case, player_A[key])
+        distance = count_cases (case, key)
+        print(distance)
         distance_x = distance[0]
         distance_y = distance[1]
-    
-        if distance_x < 2 and distance_y < 2 : 
-                if player_A [key]['type'] == 'normal': # si le type du loup = loup 
+        print(distance_x, distance_y)
+        if distance_x + distance_y != 0:#Empêche le bonus de s'activer sur la case du loup même
+            if player_A [key]['type'] == 'normal':         
+                if distance_x <= 2 and distance_y <= 2: 
                     bonusL += 10 # ajoute 10 
-        elif distance_x < 4 and distance_y < 4 :
-            for key in player_A :
-                if player_A [key]['type'] == 'alpha': # si le type du loup = alpha 
+            if player_A [key]['type'] == 'alpha': 
+                if distance_x <= 4 and distance_y <= 4 :
                     bonusA +=  30 # il ajoute 30 
     bonusTotal = bonusL + bonusA   # il faut calculer aussi le nombre d'itération !!  Erreur ici 
 
-    return bonusTotal 
+    return bonusTotal
 
  
 print(bonus(player_1,(2,2)))
