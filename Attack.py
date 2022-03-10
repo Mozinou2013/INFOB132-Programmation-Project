@@ -117,5 +117,6 @@ def attack(player_A, player_B, orders):
                 lifew = lifew/10
                 player_B [(x_B,y_B)]["life"] -= lifew
                 update_life(player_B, x_B, y_B)
+                # vérifier si humain/ chien 
          
     return player_A, player_B
