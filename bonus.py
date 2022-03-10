@@ -1,4 +1,4 @@
-player_1 = {(2,2): {'type': 'A', 'life': 100}, (1,1): {'type': 'L', 'life': 100}}
+player_1 = {(2,2): {'type': 'alpha', 'life': 100}, (1,1): {'type': 'normal', 'life': 100}}
 
 def count_cases(e1, e2):
     """
@@ -57,18 +57,18 @@ def bonus(player_A, case):
         distance_y = distance[1]
     
         if distance_x < 2 and distance_y < 2 : 
-                if player_A [key]['type'] == 'L': # si le type du loup = loup 
+                if player_A [key]['type'] == 'normal': # si le type du loup = loup 
                     bonusL += 10 # ajoute 10 
         elif distance_x < 4 and distance_y < 4 :
             for key in player_A :
-                if player_A [key]['type'] == 'A': # si le type du loup = alpha 
+                if player_A [key]['type'] == 'alpha': # si le type du loup = alpha 
                     bonusA +=  30 # il ajoute 30 
     bonusTotal = bonusL + bonusA   # il faut calculer aussi le nombre d'itération !!  Erreur ici 
 
     return bonusTotal 
 
  
-print(bonus(player_1,(2,2))
+print(bonus(player_1,(2,2)))
     
 
 # faire disparaitre le bonus  
