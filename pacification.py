@@ -95,8 +95,8 @@ def pacification(player_A, player_B, orders):
     implementation : Louise Delpierre (v.1 5/03/2022)
     """
     order = turn_list(orders) 
-    for elements in order :                 # recherche pacify dans order 
-        if 'pacify' in elements:
+    for elements in order :                
+        if 'pacify' in elements: # recherche pacify dans order 
             coords = elements.split (":pacify")
             i = 0
             for coord in coords:
@@ -107,14 +107,14 @@ def pacification(player_A, player_B, orders):
                     y_A = int(coord[1])
                     coords_omega = (x_A, y_A)
 
-        for key in player_A :               # vérifie si player_A est un omega 
-            if can_pacify(player_A[key], x_A, y_A)== True : 
+        for key in player_A :              
+            if can_pacify(player_A[key], x_A, y_A)== True :  # vérifie si player_A est un omega 
                 distance = count_cases (player_A[key],coords_omega)
                 distance_x = distance[0]
                 distance_y = distance[1]
                 if distance_x <= 6 and distance_y <= 6 : # la distance pour pacifier 
                     player_A[key]['type']== 'dog'
-                    player_A[key]['life'] -= 40 
+                    player_A[key]['life'] -= 40 #pb car je pense que si on laisse comme ça, tout les loups de A perdront 40 
                     player_B[key]['type']== 'dog'
                 else :
                     None 
