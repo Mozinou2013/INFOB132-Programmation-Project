@@ -22,7 +22,6 @@ def move(player_A, orders):
     order = turn_list(orders)
     for elements in order:
 
-        # PB FONCTIONNE SI 1 DEPLACEMENT (parce que coords ne retourne pas plusieurs pos) 
         if '@' in elements: # Pour chaque @ dans l'ordre
             coords = elements.split (":@") #Met en liste les éléments entourant @ 
 

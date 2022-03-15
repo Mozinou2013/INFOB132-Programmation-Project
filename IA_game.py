@@ -30,7 +30,8 @@ def choose_random_move(wolf):
     return coords_chosen 
 
 
-def IA_game(player_A, player_B):
+
+def IA_game(player_A, player_B, food):
     """
     To give a random order of a IA
 
@@ -38,6 +39,7 @@ def IA_game(player_A, player_B):
     ----------
     player_A : wolves of the IA (dict)
     player_B : wolves of the other player (dict)
+    food: food of the game (dict)
 
     Returns
     -------
@@ -47,16 +49,52 @@ def IA_game(player_A, player_B):
     ---------
     specification: Aurélie Genot (v.1 10/03/2022)
     implementation: Aurélie Genot (v.1 10/03/2022)
+    implementation : Aurélie Genot (v.2 15/03/2022)
     """
     orders = ""
 
-    for 
+    #Si un loup est à côté, il va l'attaquer 
+    
+    pos_player_A = player_A.keys() # Récupère toutes les clés du dictionnaire 
+    pos_player_B = player_B.keys()
+    
+    for pos_A in pos_player_A:  #Pour chaque position des loups de player_A, regarde les positions des loups de player_B
+        for pos_B in pos_player_B:
+        
+            distance = count_cases(pos_A,pos_B)
+            distance_x = distance[0]
+            distance_y = distance[1]
+            if distance_x <= 1 and distance_y <= 1 : #Si jamais l'attaque est possible 
+                attacking = pos_A
+                attacked = pos_B
+                action = 'attack'
 
-    # Regarder pr taper tt ce qui bouge 
+    # Si une nourriture est à côté, va la manger 
 
-    number_orders = randint (0,3) # Nbre d'ordres donnés par l'IA
-    for number in numbers_orders: 
-        choose = randint(0,4)
+    pos_food = food.keys() 
+
+    for pos_A in pos_player_A:  #Pour chaque position des loups de player_A, regarde les positions des nourritures 
+        for pos_food in pos_food:
+        
+            distance = count_cases(pos_A,pos_food)
+            distance_x = distance[0]
+            distance_y = distance[1]
+            if distance_x <= 1 and distance_y <= 1 : #Si jamais le repas est possible 
+                eating = pos_A
+                eaten = pos_B
+                action_2 = 'eating'
+                
+    # Dit les ordres 
+    if action == 'attack'
+        order += 
+
+   actual_x = wolf[0]
+    actual_y = wolf[1]
 
     
-## Si un loup est tout près, il tape, si il a 0 d'énergie il mange et sinon il move
+
+    coords_chosen = x_chosen + "-" + y_chosen
+
+    return coords_chosen 
+
+## Pr l'instant un loup ne pacifie jamais et ne prend pas compte ni des loups à 0 d'énergie, ni des loups pacifiés

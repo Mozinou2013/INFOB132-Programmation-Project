@@ -164,3 +164,42 @@ def move(player_A, orders):
     return player_A
                    
 print (move(player_A, orders))
+
+
+
+def check_if_good(player_A, dic_B, option): 
+    """ 
+    To check if the wolf will can eat or attack 
+
+    Parameters:
+    ----------
+    player_A: the wolves of the player_A (dic) 
+    dic_B: the dictionnary that you want to check (dic) 
+    option: if the wolf will can eat (1) or attack (2) (int)
+    
+
+
+    Versions:
+    ---------
+    Specification: Aurélie Genot (v.1 15/03/2022)
+    Implementation: Aurélie Genot (v.1 15/03/2022)
+    """
+    pos_player_A = player_A.keys() # Récupère toutes les clés du dictionnaire 
+    pos_dic_B = dic_B.keys()
+    
+    for pos_A in pos_player_A:  #Pour chaque position des loups de player_A, regarde les positions du dictionnaire 2 
+        for pos_B in pos_dic_B:
+        
+            distance = count_cases(pos_A,pos_B)
+            distance_x = distance[0]
+            distance_y = distance[1]
+            if distance_x <= 1 and distance_y <= 1 : #Si jamais l'attaque ou le repas est possible 
+                if option == 1: 
+                attacking = pos_A
+                attacked = pos_B
+                choose = 0 
+                if option == 2:
+                moving = pos_A
+                eating = pos_B
+                choose = 1 
+    
