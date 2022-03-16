@@ -65,9 +65,16 @@ def IA_game(player_A, player_B, food):
             distance_x = distance[0]
             distance_y = distance[1]
             if distance_x <= 1 and distance_y <= 1 : #Si jamais l'attaque est possible 
-                attacking = pos_A
-                attacked = pos_B
-                action = 'attack'
+                attacking_x = pos_A[0]
+                attacking_y = pos_A[1]
+                attacked_x = pos_B[0]
+                attacked_y = pos_B[1]
+                action = ":*"
+
+                if action == ":*"
+                    orders += attacking_x + "-" + attacking_y + ":*" + attacked_x + "-" + attacked_y
+
+
 
     # Si une nourriture est à côté, va la manger 
 
@@ -84,14 +91,9 @@ def IA_game(player_A, player_B, food):
                 eaten = pos_B
                 action_2 = 'eating'
                 
-    # Dit les ordres 
-    if action == 'attack'
-        order += 
-
-   actual_x = wolf[0]
-    actual_y = wolf[1]
-
-    
+            # Dit les ordres 
+            if action == 'attack'
+                order += 
 
     coords_chosen = x_chosen + "-" + y_chosen
 
