@@ -103,6 +103,6 @@ def IA_game(player_A, player_B, food):
         move_chosen = choose_random_move(wolf)
         orders += wolf_x + "-" + wolf_y + ":@" + move_chosen
 
-        
+    return orders  
 
 ## Pr l'instant un loup ne pacifie jamais et ne prend pas compte ni des loups à 0 d'énergie, ni des loups pacifiés
