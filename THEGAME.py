@@ -137,10 +137,11 @@ def check_life(player_A, case):
     implementation: Eline Mota (v.1 03/03/2022)
 
     """
-    if player_A[case]['life'] == 0:
-        return True
-    else:
-        return False
+    for wolves in player_A:
+        if wolves == case:
+            if player_A[wolves]['life'] == 0:
+                return True
+    return False
 def can_pacify(player_A, x_A, y_A):
     """Check if a wolf has enough energy to pacify and if he is an omega.
     Parameters:
@@ -556,8 +557,6 @@ def attack(player_A, player_B, orders):
                 elif i == 2 :
                     x_B = int(coord[0])
                     y_B = int(coord[1])
-            print(can_use(orders, x_A, y_A))
-
             #vérifie une série de choses avant que le loup puisse attaquer afin d'éviter les erreurs  
             if check_case((x_B, y_B), player_B) == True and check_life(player_A, (x_A, y_A)) == False and player_A[(x_A, y_A)]['pacifie'] == 'non' and can_use(orders, x_A, y_A) == True:
                 vie = player_A[(x_A,y_A)]["life"]
@@ -599,7 +598,7 @@ def eat(food, player_A, orders, team):
 
     for elements in order :
         if "<" in elements :
-            coords = elements.split (":<") #['2-2', '2-3']
+            coords = elements.split (":<")
             i = 0
             for coord in coords : 
                 i += 1
@@ -610,9 +609,10 @@ def eat(food, player_A, orders, team):
                 elif i == 2 : 
                     x_food = int(coord[0])
                     y_food = int(coord[1]) 
-                    coords_food = (x_food, y_food) #(2,3)
+                    coords_food = (x_food, y_food)
             for key in food :
                 if coords_food == key and can_use(orders, x_A, y_A) and can_eat(player_A, orders):
+                    #boucle pour éviter de dépasser 100 ou pour éviter que la vie de la nourriture soit négative
                     while player_A[(x_A, y_A)]["life"] < 100 and food[x_food, y_food]["life"]  > 0 :
                         player_A[(x_A, y_A)]["life"] += 1
                         food[x_food, y_food]["life"] -= 1
@@ -679,7 +679,6 @@ def move(player_A, player_B, orders, width, height, team, food):
     for elements in order:
         
 
-        # PB FONCTIONNE SI 1 DEPLACEMENT (parce que coords ne retourne pas plusieurs pos) 
         if '@' in elements: # Pour chaque @ dans l'ordre
             coords = elements.split (":@") #Met en liste les éléments entourant @ 
             i = 0
@@ -697,12 +696,12 @@ def move(player_A, player_B, orders, width, height, team, food):
             actual_pos = (actual_x, actual_y)
             future_pos = (future_x, future_y)
 
-            # 1ère étape: Regarder si déplacement possible (ckeck_case et in_map) 
+            # 1ère étape: Regarder si déplacement possible (ckeck_case, can_use et in_map) 
 
             if check_case(actual_pos, player_A) == True and check_case(future_pos, player_A) == False and check_case(future_pos, player_B) == False and in_map(future_pos, width, height) == True and can_use(orders, actual_x, actual_y) == True:
                
 
-            # 2ème étape: vérifie que c'est un déplacement d'une case maximumu (avec count_case)
+            # 2ème étape: vérifie que c'est un déplacement d'une case maximumum (avec count_case)
                 distance = count_cases(actual_pos, future_pos) 
                 distance_x = distance[0]
                 distance_y = distance[1] 
@@ -712,6 +711,7 @@ def move(player_A, player_B, orders, width, height, team, food):
                     case_deleted = player_A.pop(actual_pos) # Supprimer l'emplacement actuel
                     value_case_deleted = case_deleted
                     player_A[(future_pos)] = value_case_deleted # Créer le nouvel emplacement
+                    #change sur le plateau
                     x, y = trans_coord(actual_x, actual_y)
                     clear_pos(x, y)
                     if team == 1:
@@ -826,11 +826,13 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
 
         if type_1 == 'human':
             orders1 = input('choose an order')
-        else:
+        elif type_2 == 'IA':
             None
         if type_2 == 'human':
             orders2 = input('choose an order')
-        else: None
+        elif type_2 == 'IA': 
+            None
+        
 
         player_1, player_2 = pacification(player_1, player_2, orders1)
         player_2, player_1 = pacification(player_2, player_1, orders2)
@@ -861,3 +863,36 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
             player_2[wolves]['pacifie'] = 'non'
             update_life(player_2, 2, x, y )
         
+        for wolves in player_1:
+            if player_1[wolves]['type'] == 'alpha':
+                alpha1 = wolves
+        for wolves in player_2:
+            if player_2[wolves]['type'] == 'alpha':
+                alpha2 = wolves
+    if player_1[alpha1]['life'] > 0:
+        print('PLAYER 1 HAS WON')
+    elif player_2[alpha2]['life'] > 0:
+        print('PLAYER 2 HAS WON')
+    else:
+        print('EQULITY')
+
+
+print(play_game('testfichier.txt', 1, 'human', 2, 'human'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
