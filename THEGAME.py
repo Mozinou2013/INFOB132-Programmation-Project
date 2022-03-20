@@ -558,15 +558,16 @@ def attack(player_A, player_B, orders):
                     x_B = int(coord[0])
                     y_B = int(coord[1])
             #vérifie une série de choses avant que le loup puisse attaquer afin d'éviter les erreurs  
-            if check_case((x_B, y_B), player_B) == True and check_life(player_A, (x_A, y_A)) == False and player_A[(x_A, y_A)]['pacifie'] == 'non' and can_use(orders, x_A, y_A) == True:
-                vie = player_A[(x_A,y_A)]["life"]
-                bonuss = bonus(player_A, (x_A, y_A))
-                vie += bonuss
-                attaque = vie/10
-                #boucle pour éviter de tomber dans les négatifs
-                while player_B [(x_B,y_B)]["life"] >= 0 and attaque >= 0:
-                    player_B [(x_B,y_B)]["life"] -= 1  
-                    attaque -= 1   
+            if check_case((x_B, y_B), player_B) == True and check_life(player_A, (x_A, y_A)) == False and can_use(orders, x_A, y_A) == True:
+                    if player_A[(x_A, y_A)]['pacifie'] == 'non':
+                    vie = player_A[(x_A,y_A)]["life"]
+                    bonuss = bonus(player_A, (x_A, y_A))
+                    vie += bonuss
+                    attaque = vie/10
+                    #boucle pour éviter de tomber dans les négatifs
+                    while player_B [(x_B,y_B)]["life"] >= 0 and attaque >= 0:
+                        player_B [(x_B,y_B)]["life"] -= 1  
+                        attaque -= 1   
             else:
                 None
 
