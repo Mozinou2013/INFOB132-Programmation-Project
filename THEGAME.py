@@ -342,8 +342,8 @@ def can_use(order, x, y):
 
     Versions:
     ---------
-    specification: Eline Mota (11/03/2022)
-    implementation: Eline Mota (11/03/2022)
+    specification: Eline Mota (v.1 11/03/2022)
+    implementation: Eline Mota (v.1 11/03/2022)
     """
     order = turn_list(order)
     i = 0
@@ -467,7 +467,7 @@ def create_map(width, height, player_1, player_2, food):
     --------
     specification : Louise Delpierre (v1 17/02/2022)
     implementation: Eline Mota (v.1 28/02/2022)
-    Eline Mota (v.2 10/03/2022)
+    implementation: Eline Mota (v.2 10/03/2022)
     """
     print(term.home + term.clear)
     #crée le plateau
@@ -821,14 +821,17 @@ def choose_random_move(wolf):
 def IA_game(player_A, player_B, food):
     """
     To give a random order of a IA
+
     Parameters
     ----------
     player_A : wolves of the IA (dict)
     player_B : wolves of the other player (dict)
     food: food of the game (dict)
+
     Returns
     -------
     orders: orders of the IA (str)
+
     Versions:
     ---------
     specification: Aurélie Genot (v.1 10/03/2022)
@@ -837,19 +840,15 @@ def IA_game(player_A, player_B, food):
     implemantation : Eline Mota (v.3 21/03/2022)
     """
     orders = ''
-
-    #Si un loup est à côté, il va l'attaquer 
-    
-    pos_player_A = player_A.keys() # Récupère toutes les clés du dictionnaire 
-    pos_player_B = player_B.keys()
-
-    for wolves in player_A:  #Pour chaque position des loups de player_A, regarde les positions des nourritures 
+    #se nourrir
+    for wolves in player_A:
         for foods in food:
     
             distance = count_cases(wolves, foods)
             distance_x = distance[0]
             distance_y = distance[1]
-            if distance_x <= 1 and distance_y <= 1 and player_A[wolves]['life'] < 100 and food[foods]['life'] > 0 : #Si jamais le repas est possible 
+            #vérifie une série de chose pour que l'action de se nourrir ait un minimum de sens
+            if distance_x <= 1 and distance_y <= 1 and player_A[wolves]['life'] < 100 and food[foods]['life'] > 0 : 
                 eat_x = str(wolves[0])
                 eat_y = str(wolves[1])
                 eaten_x = str(foods[0])
@@ -858,19 +857,21 @@ def IA_game(player_A, player_B, food):
 
                 orders = orders + eat_x + '-' + eat_y + action_2 + eaten_x + '-' + eaten_y + ' '
 
-    
-    for wolves in player_A:  #Pour chaque position des loups de player_A, regarde les positions des loups de player_B
+    #l'attaque
+    for wolves in player_A: 
         for wolvess in player_B:
 
             distance = count_cases(wolves, wolvess)
             distance_x = distance[0]
             distance_y = distance[1]
-            if distance_x <= 1 and distance_y <= 1 and player_A[wolves]['life'] > 0: #Si jamais l'attaque est possible 
+            #vérifie une série de chose pour que l'attaque ait un minimum de sens
+            if distance_x <= 1 and distance_y <= 1 and player_A[wolves]['life'] > 0: 
                 attacking_x = str(wolves[0])
                 attacking_y = str(wolves[1])
                 attacked_x = str(wolvess[0])
                 attacked_y = str(wolvess[1])
                 orders = orders + attacking_x + "-" + attacking_y + ":*" + attacked_x + "-" + attacked_y + ' '
+    #voir commentaire ci-dessous pour comprendre
     i = 0
     for wolves in player_A:
         x = wolves[0]
@@ -889,6 +890,7 @@ def IA_game(player_A, player_B, food):
             x = str(wolves[0])
             y = str(wolves[1])
             coords_chosen = choose_random_move(wolves)
+            #on vérifie ça pour que le dernier ordre donné ne se temrine pas par un espace (pour éviter les problèmes)
             if q < i:
                 orders = orders + x + '-' + y + ':@' + coords_chosen + ' '
             else:
@@ -916,9 +918,10 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
     If there is an external referee, set group id to 0 for remote player.
     
     """
-
+    #lit le fichier
     width, height, player_1, player_2, food = read_file(map_path)
 
+    #identifie l'alpha dans chaque team 
     for key in player_1:
         if player_1[key]['type'] == 'alpha':
             alpha1 = key
@@ -929,10 +932,12 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
             alpha2 = key
         else:
             None
-    
+
+    #crée la map
     create_map(width, height, player_1, player_2, food)
 
     i = 0
+    #continue à jouer tant que les deux aplhas ont plus de 0 HP et que moins de deux cents tours ont été joués
     while player_1[alpha1]['life'] > 0 and player_2[alpha2]['life'] > 0 and i <= 200:
         i += 1
         #évite d'avoir les ordres sur le plateau
@@ -942,31 +947,36 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
 
         if type_1 == 'human':
             orders1 = input('choose an order')
-        elif type_2 == 'IA':
+        elif type_1 == 'AI':
             orders1 = IA_game(player_1, player_2, food)
+        elif type_1 == 'remote':
+            None
         if type_2 == 'human':
             orders2 = input('choose an order')
-        elif type_2 == 'IA': 
+        elif type_2 == 'AI': 
             orders2 = IA_game(player_2, player_1, food)
+        elif type_2 == 'remote':
+            None
         
-
+        #phase 1: pacification
         player_1, player_2 = pacification(player_1, player_2, orders1)
         player_2, player_1 = pacification(player_2, player_1, orders2)
-
+        #phase 2: se nourrir
         food, player_1 = eat(food, player_1, orders1, 1)
         food, player_2 = eat(food, player_2, orders2, 2)
         
-
+        #phase 3: se déplacer
         player_1 = move(player_1, player_2, orders1, width, height, 1, food)
         player_2 = move(player_2, player_1, orders2, width, height, 2, food)
 
 
         player_2b = player_2 #ne donne pas un désavantage pour attaquer à l'équipe deux 
-
+        #phase 4 et 5: attaque et bonus
         player_1, player_2b = attack(player_1, player_2b, orders1)
         player_2, player_1 = attack(player_2, player_1, orders2)
-
+        #effectue les changements de l'attaque au joueur deux
         player_2 = player_2b
+
         #rénitialise le pacifie et effectue les changements après l'attaque
         for wolves in player_1:
             x = wolves[0]
@@ -978,13 +988,14 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
             y = wolves[1]
             player_2[wolves]['pacifie'] = 'non'
             update_life(player_2, 2, x, y )
-        
+        #update la position de l'alpha pour la boucle
         for wolves in player_1:
             if player_1[wolves]['type'] == 'alpha':
                 alpha1 = wolves
         for wolves in player_2:
             if player_2[wolves]['type'] == 'alpha':
                 alpha2 = wolves
+    #Annonce le gagnant ou pas....
     if player_1[alpha1]['life'] > 0 and i < 200:
         print('PLAYER 1 HAS WON')
     elif player_2[alpha2]['life'] > 0 and i < 200:
@@ -993,4 +1004,4 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
         print('EQUALITY')
 
 
-print(play_game('testfichier.txt', 1, 'IA', 2, 'IA'))
+print(play_game('testfichier.txt', 1, 'AI', 2, 'AI'))
