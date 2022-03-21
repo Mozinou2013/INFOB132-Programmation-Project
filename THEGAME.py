@@ -1,5 +1,6 @@
 import blessed 
 term = blessed.Terminal()
+from random import randint
 
 def read_file(file):
     """ 
@@ -141,6 +142,10 @@ def check_life(player_A, case):
         if wolves == case:
             if player_A[wolves]['life'] == 0:
                 return True
+            else:
+                None
+        else:
+            None
     return False
 def can_pacify(player_A, x_A, y_A):
     """Check if a wolf has enough energy to pacify and if he is an omega.
@@ -343,15 +348,18 @@ def can_use(order, x, y):
     order = turn_list(order)
     i = 0
     for element in order:
-        element = element.split(':')
-        element = element[0]
-        element = element.split('-')
-        if int(element[0]) == x and int(element[1]) == y:
-            i += 1
-    if i >= 2:
-        return False
-    elif i <= 1:
-        return True
+        if ':' in order:
+            element = element.split(':')
+            element = element[0]
+            element = element.split('-')
+            if int(element[0]) == x and int(element[1]) == y:
+                i += 1
+        if i >= 2:
+            return False
+        elif i <= 1:
+            return True
+        else:
+            return False
 
 def count_cases(e1, e2):
     """
@@ -558,8 +566,8 @@ def attack(player_A, player_B, orders):
                     x_B = int(coord[0])
                     y_B = int(coord[1])
             #vérifie une série de choses avant que le loup puisse attaquer afin d'éviter les erreurs  
-            if check_case((x_B, y_B), player_B) == True and check_life(player_A, (x_A, y_A)) == False and can_use(orders, x_A, y_A) == True:
-                    if player_A[(x_A, y_A)]['pacifie'] == 'non':
+            if check_life(player_A, (x_A, y_A)) == False and check_case((x_B, y_B), player_B) == True and can_use(orders, x_A, y_A) == True:
+                if player_A[(x_A, y_A)]['pacifie'] == 'non':
                     vie = player_A[(x_A,y_A)]["life"]
                     bonuss = bonus(player_A, (x_A, y_A))
                     vie += bonuss
@@ -783,6 +791,113 @@ def pacification(player_A, player_B, orders):
                     None 
     return player_A, player_B
 
+def choose_random_move(wolf): 
+    """ 
+    To give a ramdom position for a move possible on the map
+    
+    Parameters
+    -----------
+    wolf : the wolf who will move (tuple)
+    Returns 
+    --------
+    coords_chosen: the coords chosen randomly (str)
+    
+    Versions
+    ---------
+    specification: Aurélie Genot (v.1 10/03/2022)
+    implementation: Auréie Genot (v.1 10/03/2022)
+    """
+    actual_x = wolf[0]
+    actual_y = wolf[1]
+
+    #Choisit un déplacement possible
+    x_chosen= str(randint(actual_x-1,actual_x+1)) 
+    y_chosen= str(randint(actual_y-1,actual_y+1))
+
+    coords_chosen = x_chosen + "-" + y_chosen
+
+    return coords_chosen 
+
+def IA_game(player_A, player_B, food):
+    """
+    To give a random order of a IA
+    Parameters
+    ----------
+    player_A : wolves of the IA (dict)
+    player_B : wolves of the other player (dict)
+    food: food of the game (dict)
+    Returns
+    -------
+    orders: orders of the IA (str)
+    Versions:
+    ---------
+    specification: Aurélie Genot (v.1 10/03/2022)
+    implementation: Aurélie Genot (v.1 10/03/2022)
+    implementation : Aurélie Genot (v.2 15/03/2022)
+    implemantation : Eline Mota (v.3 21/03/2022)
+    """
+    orders = ''
+
+    #Si un loup est à côté, il va l'attaquer 
+    
+    pos_player_A = player_A.keys() # Récupère toutes les clés du dictionnaire 
+    pos_player_B = player_B.keys()
+
+    for wolves in player_A:  #Pour chaque position des loups de player_A, regarde les positions des nourritures 
+        for foods in food:
+    
+            distance = count_cases(wolves, foods)
+            distance_x = distance[0]
+            distance_y = distance[1]
+            if distance_x <= 1 and distance_y <= 1 and player_A[wolves]['life'] < 100 and food[foods]['life'] > 0 : #Si jamais le repas est possible 
+                eat_x = str(wolves[0])
+                eat_y = str(wolves[1])
+                eaten_x = str(foods[0])
+                eaten_y = str(foods[1])
+                action_2 = ':<'
+
+                orders = orders + eat_x + '-' + eat_y + action_2 + eaten_x + '-' + eaten_y + ' '
+
+    
+    for wolves in player_A:  #Pour chaque position des loups de player_A, regarde les positions des loups de player_B
+        for wolvess in player_B:
+
+            distance = count_cases(wolves, wolvess)
+            distance_x = distance[0]
+            distance_y = distance[1]
+            if distance_x <= 1 and distance_y <= 1 and player_A[wolves]['life'] > 0: #Si jamais l'attaque est possible 
+                attacking_x = str(wolves[0])
+                attacking_y = str(wolves[1])
+                attacked_x = str(wolvess[0])
+                attacked_y = str(wolvess[1])
+                orders = orders + attacking_x + "-" + attacking_y + ":*" + attacked_x + "-" + attacked_y + ' '
+    i = 0
+    for wolves in player_A:
+        x = wolves[0]
+        y = wolves[1]
+        order = str(x) + '-' + str(y)
+        if order not in orders:
+            i += 1
+    q = 0
+    for wolves in player_A:
+        q += 1
+        x = wolves[0]
+        y = wolves[1]
+        order = str(x) + '-' + str(y)
+        if order not in orders:
+
+            x = str(wolves[0])
+            y = str(wolves[1])
+            coords_chosen = choose_random_move(wolves)
+            if q < i:
+                orders = orders + x + '-' + y + ':@' + coords_chosen + ' '
+            else:
+                orders = orders + x + '-' + y + ':@' + coords_chosen
+            
+
+    return orders
+
+
 def play_game(map_path, group_1, type_1, group_2, type_2):
     """Play a game.
     
@@ -828,11 +943,11 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
         if type_1 == 'human':
             orders1 = input('choose an order')
         elif type_2 == 'IA':
-            None
+            orders1 = IA_game(player_1, player_2, food)
         if type_2 == 'human':
             orders2 = input('choose an order')
         elif type_2 == 'IA': 
-            None
+            orders2 = IA_game(player_2, player_1, food)
         
 
         player_1, player_2 = pacification(player_1, player_2, orders1)
@@ -870,30 +985,12 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
         for wolves in player_2:
             if player_2[wolves]['type'] == 'alpha':
                 alpha2 = wolves
-    if player_1[alpha1]['life'] > 0:
+    if player_1[alpha1]['life'] > 0 and i < 200:
         print('PLAYER 1 HAS WON')
-    elif player_2[alpha2]['life'] > 0:
+    elif player_2[alpha2]['life'] > 0 and i < 200:
         print('PLAYER 2 HAS WON')
     else:
-        print('EQULITY')
+        print('EQUALITY')
 
 
-print(play_game('testfichier.txt', 1, 'human', 2, 'human'))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+print(play_game('testfichier.txt', 1, 'IA', 2, 'IA'))
