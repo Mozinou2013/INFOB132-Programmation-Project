@@ -109,10 +109,6 @@ def attack(player_A, player_B, orders):
                     y_B = int(coord[1])
                 
             if player_A[(x_A,y_A)]["type"] != "dog" or player_A[(x_A,y_A)]["type"] != "human" :
-                if check_life(player_A, (x_A, y_A)):
-                    print(term.move_xy(50, 100) + 'your wolf has zero life, you cannot attack') #tjrs utile vu quon demande si type = human ?
-
-                else :
                     lifew = player_A[(x_A,y_A)]["life"]
                     lifew = lifew/10
                     player_B [(x_B,y_B)]["life"] -= lifew

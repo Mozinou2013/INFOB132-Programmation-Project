@@ -88,7 +88,6 @@ def pacification(player_A, player_B, orders):
     --------
     player_A : the player with the type modification (dict)
     player_B : the player with the type modification (dict) 
-
     Versions
     --------
     specification : Aline Boulanger (v.1 17/02/2022) 
@@ -106,19 +105,27 @@ def pacification(player_A, player_B, orders):
                     x_A = int(coord[0])
                     y_A = int(coord[1])
                     coords_omega = (x_A, y_A)
+       
+                if can_pacify(player_A, x_A, y_A) == True :  # vérifie si player_A est un omega 
+                    for key in player_A:
+                        distance = count_cases (key,coords_omega)
+                        distance_x = distance[0]
+                        distance_y = distance[1]
+                        if distance_x <= 6 and distance_y <= 6 and key != coords_omega: # la distance pour pacifier 
+                            player_A[key]['pacifie'] = 'oui'
+                            print(player_A[key]['pacifie'])
+                        else:
+                            None
+                    for key in player_B:
+                        distance = count_cases (key,coords_omega)
+                        distance_x = distance[0]
+                        distance_y = distance[1]
+                        if distance_x <= 6 and distance_y <= 6 and key != coords_omega: # la distance pour pacifier 
+                            player_B[key]['pacifie']= 'oui'
 
-        for key in player_A :              
-            if can_pacify(player_A[key], x_A, y_A)== True :  # vérifie si player_A est un omega 
-                distance = count_cases (player_A[key],coords_omega)
-                distance_x = distance[0]
-                distance_y = distance[1]
-                if distance_x <= 6 and distance_y <= 6 : # la distance pour pacifier 
-                    player_A[key]['type']== 'dog'
-                    player_A[key]['life'] -= 40 #pb car je pense que si on laisse comme ça, tout les loups de A perdront 40 
-                    player_B[key]['type']== 'dog'
-                else :
+                        else :
+                             None 
+                else : 
                     None 
-            else : 
-                None 
-        
+                player_A[coords_omega]['life'] -= 40
     return player_A, player_B
