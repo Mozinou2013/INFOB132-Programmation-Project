@@ -1,6 +1,310 @@
 import blessed 
 term = blessed.Terminal()
 from random import randint
+import socket
+import time
+
+
+def create_server_socket(local_port, verbose):
+    """Creates a server socket.
+    
+    Parameters
+    ----------
+    local_port: port to listen to (int)
+    verbose: True if verbose (bool)
+    
+    Returns
+    -------
+    socket_in: server socket (socket.socket)
+    
+    """
+    
+    socket_in = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket_in.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # deal with a socket in TIME_WAIT state
+
+    if verbose:
+        print(' binding on local port %d to accept a remote connection' % local_port)
+    
+    try:
+        socket_in.bind(('', local_port))
+    except:
+        raise IOError('local port %d already in use by your group or the referee' % local_port)
+    socket_in.listen(1)
+    
+    if verbose:
+        print('   done -> can now accept a remote connection on local port %d\n' % local_port)
+        
+    return socket_in
+
+
+def create_client_socket(remote_IP, remote_port, verbose):
+    """Creates a client socket.
+    
+    Parameters
+    ----------
+    remote_IP: IP address to send to (int)
+    remote_port: port to send to (int)
+    verbose: True if verbose (bool)
+    
+    Returns
+    -------
+    socket_out: client socket (socket.socket)
+    
+    """
+
+    socket_out = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket_out.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # deal with a socket in TIME_WAIT state
+    
+    connected = False
+    msg_shown = False
+    
+    while not connected:
+        try:
+            if verbose and not msg_shown:
+                print(' connecting on %s:%d to send orders' % (remote_IP, remote_port))
+                
+            socket_out.connect((remote_IP, remote_port))
+            connected = True
+            
+            if verbose:
+                print('   done -> can now send orders to %s:%d\n' % (remote_IP, remote_port))
+        except:
+            if verbose and not msg_shown:
+                print('   connection failed -> will try again every 100 msec...')
+                
+            time.sleep(.1)
+            msg_shown = True
+            
+    return socket_out
+    
+    
+def wait_for_connection(socket_in, verbose):
+    """Waits for a connection on a server socket.
+    
+    Parameters
+    ----------
+    socket_in: server socket (socket.socket)
+    verbose: True if verbose (bool)
+    
+    Returns
+    -------
+    socket_in: accepted connection (socket.socket)
+    
+    """
+    
+    if verbose:
+        print(' waiting for a remote connection to receive orders')
+        
+    socket_in, remote_address = socket_in.accept()
+    
+    if verbose:
+        print('   done -> can now receive remote orders from %s:%d\n' % remote_address)
+        
+    return socket_in            
+
+
+def create_connection(your_group, other_group=0, other_IP='127.0.0.1', verbose=False):
+    """Creates a connection with a referee or another group.
+    
+    Parameters
+    ----------
+    your_group: id of your group (int)
+    other_group: id of the other group, if there is no referee (int, optional)
+    other_IP: IP address where the referee or the other group is (str, optional)
+    verbose: True only if connection progress must be displayed (bool, optional)
+    
+    Returns
+    -------
+    connection: socket(s) to receive/send orders (dict of socket.socket)
+    
+    Raises
+    ------
+    IOError: if your group fails to create a connection
+    
+    Notes
+    -----
+    Creating a connection can take a few seconds (it must be initialised on both sides).
+    
+    If there is a referee, leave other_group=0, otherwise other_IP is the id of the other group.
+    
+    If the referee or the other group is on the same computer than you, leave other_IP='127.0.0.1',
+    otherwise other_IP is the IP address of the computer where the referee or the other group is.
+    
+    The returned connection can be used directly with other functions in this module.
+            
+    """
+    
+    # init verbose display
+    if verbose:
+        print('\n[--- starts connection -----------------------------------------------------\n')
+        
+    # check whether there is a referee
+    if other_group == 0:
+        if verbose:
+            print('** group %d connecting to referee on %s **\n' % (your_group, other_IP))
+        
+        # create one socket (client only)
+        socket_out = create_client_socket(other_IP, 42000+your_group, verbose)
+        
+        connection = {'in':socket_out, 'out':socket_out}
+        
+        if verbose:
+            print('** group %d successfully connected to referee on %s **\n' % (your_group, other_IP))
+    else:
+        if verbose:
+            print('** group %d connecting to group %d on %s **\n' % (your_group, other_group, other_IP))
+
+        # create two sockets (server and client)
+        socket_in = create_server_socket(42000+your_group, verbose)
+        socket_out = create_client_socket(other_IP, 42000+other_group, verbose)
+        
+        socket_in = wait_for_connection(socket_in, verbose)
+        
+        connection = {'in':socket_in, 'out':socket_out}
+
+        if verbose:
+            print('** group %d successfully connected to group %d on %s **\n' % (your_group, other_group, other_IP))
+        
+    # end verbose display
+    if verbose:
+        print('----------------------------------------------------- connection started ---]\n')
+
+    return connection
+        
+        
+def bind_referee(group_1, group_2, verbose=False):
+    """Put a referee between two groups.
+    
+    Parameters
+    ----------
+    group_1: id of the first group (int)
+    group_2: id of the second group (int)
+    verbose: True only if connection progress must be displayed (bool, optional)
+    
+    Returns
+    -------
+    connections: sockets to receive/send orders from both players (dict)
+    
+    Raises
+    ------
+    IOError: if the referee fails to create a connection
+    
+    Notes
+    -----
+    Putting the referee in place can take a few seconds (it must be connect to both groups).
+        
+    connections contains two connections (dict of socket.socket) which can be used directly
+    with other functions in this module.  connection of first (second) player has key 1 (2).
+            
+    """
+    
+    # init verbose display
+    if verbose:
+        print('\n[--- starts connection -----------------------------------------------------\n')
+
+    # create a server socket (first group)
+    if verbose:
+        print('** referee connecting to first group %d **\n' % group_1)        
+
+    socket_in_1 = create_server_socket(42000+group_1, verbose)
+    socket_in_1 = wait_for_connection(socket_in_1, verbose)
+
+    if verbose:
+        print('** referee succcessfully connected to first group %d **\n' % group_1)        
+        
+    # create a server socket (second group)
+    if verbose:
+        print('** referee connecting to second group %d **\n' % group_2)        
+
+    socket_in_2 = create_server_socket(42000+group_2, verbose)
+    socket_in_2 = wait_for_connection(socket_in_2, verbose)
+
+    if verbose:
+        print('** referee succcessfully connected to second group %d **\n' % group_2)        
+    
+    # end verbose display
+    if verbose:
+        print('----------------------------------------------------- connection started ---]\n')
+
+    return {1:{'in':socket_in_1, 'out':socket_in_1},
+            2:{'in':socket_in_2, 'out':socket_in_2}}
+
+
+def close_connection(connection):
+    """Closes a connection with a referee or another group.
+    
+    Parameters
+    ----------
+    connection: socket(s) to receive/send orders (dict of socket.socket)
+    
+    """
+    
+    # get sockets
+    socket_in = connection['in']
+    socket_out = connection['out']
+    
+    # shutdown sockets
+    socket_in.shutdown(socket.SHUT_RDWR)    
+    socket_out.shutdown(socket.SHUT_RDWR)
+    
+    # close sockets
+    socket_in.close()
+    socket_out.close()
+    
+    
+def notify_remote_orders(connection, orders):
+    """Notifies orders to a remote player.
+    
+    Parameters
+    ----------
+    connection: sockets to receive/send orders (dict of socket.socket)
+    orders: orders to notify (str)
+        
+    Raises
+    ------
+    IOError: if remote player cannot be reached
+    
+    """
+
+    # deal with null orders (empty string)
+    if orders == '':
+        orders = 'null'
+    
+    # send orders
+    try:
+        connection['out'].sendall(orders.encode())
+    except:
+        raise IOError('remote player cannot be reached')
+
+
+def get_remote_orders(connection):
+    """Returns orders from a remote player.
+
+    Parameters
+    ----------
+    connection: sockets to receive/send orders (dict of socket.socket)
+        
+    Returns
+    ----------
+    player_orders: orders given by remote player (str)
+
+    Raises
+    ------
+    IOError: if remote player cannot be reached
+            
+    """
+   
+    # receive orders    
+    try:
+        orders = connection['in'].recv(65536).decode()
+    except:
+        raise IOError('remote player cannot be reached')
+        
+    # deal with null orders
+    if orders == 'null':
+        orders = ''
+        
+    return orders
 
 def read_file(file):
     """ 
@@ -135,7 +439,7 @@ def check_life(player_A, case):
     Versions:
     ---------
     specification: Eline Mota (v.1 19/02/2022)
-    implementation: Eline Mota (v.1 03/03/2022)
+    implementation: Aline Boulanger (v.1 03/03/2022)
 
     """
     for wolves in player_A:
@@ -175,7 +479,7 @@ def can_pacify(player_A, x_A, y_A):
             return False
     else :
         return False
-print(term.move_xy(20,20))
+
 
 #utiliser cette fonction après avoir adapter les coordonnées.
 def clear_pos(x,y):
@@ -196,7 +500,7 @@ def clear_pos(x,y):
         print(term.move_xy(x,y) + term.on_lavenderblush3 + ' ')
 
 
-print(term.move_xy(20,20))
+
 
 def color (team):
     """
@@ -265,7 +569,7 @@ def update_life(player_A, number, x, y):
     Versions:
     ----------
     specificaion: Eline Mota (v.1 03/03/2022)
-    Eline Mota (v.2 18/03/2022)
+    specification: Eline Mota (v.2 18/03/2022)
     implementation: Eline Mota (v.1 03/03/2022)
     """
     colore = color(number) #la couleur de la team
@@ -312,9 +616,11 @@ def check_case(case, dictionnary_checked):
     -----------
     case: a case of the map (tuple)
     dictionnary_checked: dictionnary in which we check the information(dict)
+
     Return:
     -------
     Result: True if there is a item on the case, False otherwise (bool)
+
     Versions:
     ---------
     specification: Louise Delpierre (v.1 19/02/2022)
@@ -328,7 +634,7 @@ def check_case(case, dictionnary_checked):
 
 
 def can_use(order, x, y):
-    """Check if a wolf can play, check if it hasn't already been used
+    """Check if a wolf can play, if it hasn't already been used
 
     Parameters:
     ------------
@@ -354,12 +660,12 @@ def can_use(order, x, y):
             element = element.split('-')
             if int(element[0]) == x and int(element[1]) == y:
                 i += 1
-        if i >= 2:
-            return False
-        elif i <= 1:
-            return True
-        else:
-            return False
+    if i >= 2:
+        return False
+    elif i <= 1:
+        return True
+    else:
+        return False
 
 def count_cases(e1, e2):
     """
@@ -492,9 +798,6 @@ def create_map(width, height, player_1, player_2, food):
         y = key[1]
         update_food(food)
 
-
-
-
 def bonus(player_A, case):
     '''
     Get a bonus to the wolves of the player who is playing 
@@ -528,18 +831,23 @@ def bonus(player_A, case):
 
     return bonusTotal
 
-def attack(player_A, player_B, orders): 
+def attack(player_A, player_B, orders, number, i): 
     '''
     Attacks the wolves of the other player 
+
     Parameters
     ----------
     player_A : wolves of the player who attacks (dict)
     player_B : wolves of the player who is attacked (dict)
     orders : orders of the player who attacks (str)
+    number: number of the team attacked (int)
+    i:
+
     Returns
     --------
     player_1: wolves of the player 1 (dict)
     player_2: wolves of the player 2 (dict)
+
     Versions
     --------
     specification : Eline Mota (v.1 17/02/2022)
@@ -573,14 +881,15 @@ def attack(player_A, player_B, orders):
                     vie += bonuss
                     attaque = vie/10
                     #boucle pour éviter de tomber dans les négatifs
-                    while player_B [(x_B,y_B)]["life"] >= 0 and attaque >= 0:
+                    while player_B [(x_B,y_B)]["life"] > 0 and attaque > 0:
                         player_B [(x_B,y_B)]["life"] -= 1  
                         attaque -= 1   
+                    update_life(player_B, number, x_B, y_B )
+                    i = 0
             else:
-                None
+                i += 1
 
-    return player_A, player_B
-
+    return player_A, player_B, i
 
 def eat(food, player_A, orders, team):
     """
@@ -599,7 +908,7 @@ def eat(food, player_A, orders, team):
     Versions:
     ---------
     specifiaction: Aline Boulanger (v.1 19/02/2022)
-    Eline Mota (v.2 18/03/2022)
+    specification: Eline Mota (v.2 18/03/2022)
     implementation : Aline Boulanger (v.1 02/03/2022)
     """
     
@@ -620,7 +929,7 @@ def eat(food, player_A, orders, team):
                     y_food = int(coord[1]) 
                     coords_food = (x_food, y_food)
             for key in food :
-                if coords_food == key and can_use(orders, x_A, y_A) and can_eat(player_A, orders):
+                if coords_food == key and can_use(orders, x_A, y_A) and can_eat(player_A, orders) and check_case((x_A, y_A),player_A) == True:
                     #boucle pour éviter de dépasser 100 ou pour éviter que la vie de la nourriture soit négative
                     while player_A[(x_A, y_A)]["life"] < 100 and food[x_food, y_food]["life"]  > 0 :
                         player_A[(x_A, y_A)]["life"] += 1
@@ -820,7 +1129,7 @@ def choose_random_move(wolf):
 
 def IA_game(player_A, player_B, food):
     """
-    To give a random order of a IA
+    Return a random order
 
     Parameters
     ----------
@@ -920,6 +1229,10 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
     """
     #lit le fichier
     width, height, player_1, player_2, food = read_file(map_path)
+    if type_1 == 'remote':
+        connection = create_connection(group_2, group_1)
+    elif type_2 == 'remote':
+        connection = create_connection(group_1, group_2)
 
     #identifie l'alpha dans chaque team 
     for key in player_1:
@@ -939,7 +1252,8 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
     i = 0
     #continue à jouer tant que les deux aplhas ont plus de 0 HP et que moins de deux cents tours ont été joués
     while player_1[alpha1]['life'] > 0 and player_2[alpha2]['life'] > 0 and i <= 200:
-        i += 1
+
+
         #évite d'avoir les ordres sur le plateau
         print(term.move_xy(25,25))
 
@@ -950,13 +1264,18 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
         elif type_1 == 'AI':
             orders1 = IA_game(player_1, player_2, food)
         elif type_1 == 'remote':
-            None
+            orders1 = get_remote_orders(connection)
         if type_2 == 'human':
             orders2 = input('choose an order')
         elif type_2 == 'AI': 
             orders2 = IA_game(player_2, player_1, food)
         elif type_2 == 'remote':
-            None
+            orders2 = get_remote_orders(connection)
+        
+        if '*' not in orders1 and '*' not in orders2:
+            i += 1
+
+
         
         #phase 1: pacification
         player_1, player_2 = pacification(player_1, player_2, orders1)
@@ -972,10 +1291,12 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
 
         player_2b = player_2 #ne donne pas un désavantage pour attaquer à l'équipe deux 
         #phase 4 et 5: attaque et bonus
-        player_1, player_2b = attack(player_1, player_2b, orders1)
-        player_2, player_1 = attack(player_2, player_1, orders2)
+        player_1, player_2b, i = attack(player_1, player_2b, orders1, 2, i)
+        player_2, player_1, i = attack(player_2, player_1, orders2, 1, i)
         #effectue les changements de l'attaque au joueur deux
         player_2 = player_2b
+
+        
 
         #rénitialise le pacifie et effectue les changements après l'attaque
         for wolves in player_1:
@@ -995,13 +1316,32 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
         for wolves in player_2:
             if player_2[wolves]['type'] == 'alpha':
                 alpha2 = wolves
+        
+
     #Annonce le gagnant ou pas....
     if player_1[alpha1]['life'] > 0 and i < 200:
         print('PLAYER 1 HAS WON')
     elif player_2[alpha2]['life'] > 0 and i < 200:
         print('PLAYER 2 HAS WON')
-    else:
+    elif player_2[alpha2]['life'] == 0 and player_1[alpha1]['life'] == 0:
         print('EQUALITY')
+    else:
+        tot_live1 = 0
+        tot_live2 = 0
+        for wolves in player_1:
+            tot_live1 += player_1[wolves]['life']
+        for wolves in player_2:
+            tot_live2 += player_2[wolves]['life']
+        
+        if tot_live1 > tot_live2:
+            print('Player 1 has won')
+        elif tot_live2 > tot_live1:
+            print('Player 2 has won')
+        else:
+            print('EQUALITY')
+
+    if type_1 == 'remote' or type_2 == 'remote':
+        close_connection(connection)
 
 
-print(play_game('testfichier.txt', 1, 'AI', 2, 'AI'))
+play_game('testfichier.txt', 1, 'AI', 2, 'AI')
