@@ -651,10 +651,10 @@ def can_use(order, x, y):
     specification: Eline Mota (v.1 11/03/2022)
     implementation: Eline Mota (v.1 11/03/2022)
     """
-    order = turn_list(order)
     i = 0
-    for element in order:
-        if ':' in order:
+    if ':' in order:
+        order = turn_list(order)
+        for element in order: 
             element = element.split(':')
             element = element[0]
             element = element.split('-')
@@ -662,7 +662,7 @@ def can_use(order, x, y):
                 i += 1
     if i >= 2:
         return False
-    elif i <= 1:
+    elif i < 1:
         return True
     else:
         return False
