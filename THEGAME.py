@@ -654,15 +654,14 @@ def can_use(order, x, y):
     i = 0
     if ':' in order:
         order = turn_list(order)
-        for element in order: 
-            element = element.split(':')
-            element = element[0]
-            element = element.split('-')
-            if int(element[0]) == x and int(element[1]) == y:
-                i += 1
-    if i >= 2:
-        return False
-    elif i < 1:
+        for element in order:
+            if element != ' ' and element != '':
+                element = element.split(':')
+                element = element[0]
+                element = element.split('-')
+                if int(element[0]) == x and int(element[1]) == y:
+                    i += 1
+    if i < 1:
         return True
     else:
         return False
