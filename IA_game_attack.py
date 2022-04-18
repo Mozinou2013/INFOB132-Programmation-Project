@@ -59,7 +59,7 @@ def IA_game_attack(player_A, player_B, orders):
             attacked_x = str(pos_alpha[0])
             attacked_y = str(pos_alpha[1])
             
-            if can_use(orders, attack_x, attack_y) == True: 
+            if can_use(orders, int(attack_x), int(attack_y)) == True: 
                 orders += orders + attack_x + '-' + attack_y + action + attacked_x + '-' + attacked_y + ' '     
                 
     return orders
