@@ -10,11 +10,9 @@ def IA_game_attack(player_A, player_B, orders):
     player_A : wolves of the IA (dict)
     player_B : wolves of the player_B (dict)
     orders: orders of the IA (str)
-
     Returns
     -------
     orders: orders of the IA (str)
-
     Versions:
     ---------
     specification: Aurélie Genot et Aline Boulanger (v.1 31/03/2022)
@@ -22,13 +20,13 @@ def IA_game_attack(player_A, player_B, orders):
     implementation : Aurélie Genot (v.2 02/04/2022)
     """
     
-     # Récupérer la position de l'omega adverse 
-    for key in player_B : 
-        if player_B[key]["type"] == 'omega':
-            life_omega = player_B[key]["life"]
+    # Récupérer la position de l'omega adverse 
+    for key in player_B :
+        if player_B[key]['type'] == 'omega':
+            life_omega = player_B[key]['life']
             pos_omega = key
 
-        if player_B[key]["type"]= 'alpha':
+        if player_B[key]['type']== 'alpha':
             life_alpha = player_B[key]['life']
             pos_alpha = key 
 
@@ -41,23 +39,29 @@ def IA_game_attack(player_A, player_B, orders):
         distance_a_x = distance_alpha[0] 
         distance_a_y = distance_alpha[1]
 
-        if distance_o_x <= 1 and distance_o_y <= 1 or distance_a_x <=1 and distance_a_x <=1: 
+        if distance_o_x <= 1 and distance_o_y <= 1 and life_omega > 30:
             # attaquer l'omega adverse si celui-ci a plus que 30 points de vie 
                 attack_x = str(wolves[0])
                 attack_y = str(wolves[1])
                 action = '*'
-
-                if 30 < life_omega :  
-                    attacked_x = str(pos_omega[0])
-                    attacked_y = str(pos_omega[1])
+  
+                attacked_x = str(pos_omega[0])
+                attacked_y = str(pos_omega[1])
+            
+                if can_use(orders, attack_x, attack_y) == True: 
+                    orders += orders + attack_x + '-' + attack_y + action + attacked_x + '-' + attacked_y + ' ' 
+        
+        elif distance_a_x <=1 and distance_a_x <=1: 
+            attack_x = str(wolves[0])
+            attack_y = str(wolves[1])
+            action = '*'
                     
-                if 30> life_omega and 0 < life_alpha: 
-                    attacked_x = str(pos_alpha[0])
-                    attacked_y = str(pos_alpha[1])
-                    
-                if can_use(orders, attack_x, attack_y): 
+            attacked_x = str(pos_alpha[0])
+            attacked_y = str(pos_alpha[1])
+            
+            if can_use(orders, attack_x, attack_y) == True: 
                 orders += orders + attack_x + '-' + attack_y + action + attacked_x + '-' + attacked_y + ' '     
-                    
+                
     return orders
 
 
