@@ -32,7 +32,7 @@ def IA_game_eat(player_A, food, orders):
                     eaten_x = str(foods[0])
                     eaten_y = str(foods[1])
                     action_2 = ':<'
-                    if can_use(orders, eat_x, eat_y): 
+                    if can_use(orders, int(eat_x), int(eat_y)) == True: 
                         orders += orders + eat_x + '-' + eat_y + action_2 + eaten_x + '-' + eaten_y + ' '
     return orders
                         
