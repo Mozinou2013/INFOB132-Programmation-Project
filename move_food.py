@@ -21,7 +21,7 @@ def move_food(pos, food):
     for foods in food:
         i += 1
         x, y = localisation(pos, foods)
-        distance = x + y
+        distance = abs(x) + abs(y)
         if i == 1:
             z = distance
         else:
@@ -29,9 +29,24 @@ def move_food(pos, food):
                 z = distance
                 distance_x = x
                 distance_y = y
-                the_food = foods
+
             else:
                 None
+    
+    if distance_x > 0:
+        move_x = pos[0] + 1
+    elif distance_x < 0:
+        move_x = pos[0] - 1
+    else:
+        move_x = pos[0]
+
+    if distance_y > 0:
+        move_y = pos[1] + 1
+    elif distance_y < 0:
+        move_y = pos[1] - 1
+    else:
+        move_y = pos[1]
         
-    order = str(pos[0]) + '-' + str(pos[1]) + ':@' + str(the_food[0]) + '-' + str(the_food[1])
+        
+    order = str(pos[0]) + '-' + str(pos[1]) + ':@' + str(move_x) + '-' + str(move_y)
     return order
