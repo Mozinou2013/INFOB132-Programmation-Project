@@ -1,10 +1,25 @@
 def IA_final(player_1, player_2, food, width, height):
 
-    'attribue un numéro à chaque loup pour les distinguer (à voir)'
+## OBLIGAT° DE RAPPROCHER LES LOULOU 
 
-    if 'loup à moins de 2 cases de alpha:':
-        'alpha recule et deux ou trois (ou plus) loups normaux les plus proches viendront en aide' #certains
+    ## DEF 
+    if 'loup ennemi à moins de 2 cases de notre alpha:':
+        'alpha recule'
 
+        if 'omega a moins de 40 de vie ou un seul loup dans un rayon de 3-4 cases': 
+            'omega se rapproche avec alpha'
+        elif 'omega a plus de 40 de vie et plus d un loup dans un rayon de 3-4 cases':
+            'omega pacifie'
+        
+       # if 'loups normaux à moins de une case de alpha ou omega adverses':
+       #     'attaque'
+        else:
+            if 'omega adverse plus de 40 pv':
+                'loups normaux se deplacent vers omega'
+            else: 'omega adverse moins de 40':
+                'se déplacent vers alpha' 
+        
+##PB PB DEUX IF PAS MEME NIV? 
         if 'loup normaux moins de une case et au moins 20 pv':
             'les deux ou trois (ou plus) loups normaux attaquent'
         else:
@@ -16,18 +31,6 @@ def IA_final(player_1, player_2, food, width, height):
                 else:
                     'se rapproche de la nourriture (si possible dans le sens de l alpha'  #laisser une proche de l'alpha pour lui
 
-        if 'omega a plus de 40 de vie et plus d un loup dans un rayon de 3-4 cases':
-            'omega pacifie'
-        elif 'omega a moins de 40 de vie ou un seul loup dans un rayon de 3-4 cases': 
-            'omega se recule avec alpha'
-        
-        if 'autres loups normaux pas venus en défense à moins de une case de alpha ou omega adverses':
-            'attaque'
-        else:
-            if 'omega adverse plus de 40 pv':
-                'loups normaux se deplacent vers omega'
-            else: 'omega adverse moins de 40':
-                'se déplacent vers alpha' 
         
     else: 'loups adverses à plus de deux cases de alpha et omega':
 
