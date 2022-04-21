@@ -32,9 +32,9 @@ def IA_game_attack(player_A, life_ennemy, pos_ennemy, orders):
 
 
 
-        if distance_wolf_x <= 1 and distance_wolf_y <= 1 and life_omega > 30:
+        if distance_wolf_x <= 1 and distance_wolf_y <= 1 and life_ennemy> 30:
             # attaquer l'omega adverse si celui-ci a plus que 30 points de vie 
-      
+            print('lol')
 
 def IA_game_attack(wolf, ennemy, orders): 
     """
