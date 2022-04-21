@@ -24,19 +24,16 @@ def IA_food_eaten(dic_wolves, food):
                 food_eaten = foods[key]
                 wolf = dic_wolves[key]
                 
-                return wolf 
-                return food_eaten 
-             
 
-if distance_x <= 1 and distance_y <=1: 
-    #vérifie que l'action de se nourrir ait un minimum de sens
-    if 100 > dic_wolves[wolves]['life'] and food[foods]['life'] > 0 :
-        IA_game_eat(wolf, food_eaten, orders)  
+                if distance_x <= 1 and distance_y <=1: 
+                #vérifie que l'action de se nourrir ait un minimum de sens
+                    if 90 >= dic_wolves[wolves]['life'] and food[foods]['life'] > 0 :
+                        IA_game_eat(wolf, food_eaten, orders)  
 
 ## POUR CREER L'ORDRE FOOD 
 def IA_game_eat(wolf, food_eaten, orders):
     """
-    To make the wolves eat
+    To give the order to make a wolf eat
 
     Parameters
     ----------
