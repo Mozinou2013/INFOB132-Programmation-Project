@@ -1,22 +1,37 @@
-pos_alpha_omega = {pos_alpha : 'alpha', pos_omega : 'omega'}
 
-## PARTIE OMEGA ET ALPHA MANGENT 
-def IA_food_eaten(wolves, food)
-
-
-## PARTIE LES LOUPS MANGENT 
-for wolves in player_A:
-        for foods in food:
+## On appelle soit le dic contenant alpha/omega soit le dic de tous les loups 
+def IA_food_eaten(dic_wolves, food):
+    """ 
+    Find the food that a wolf can eat 
     
-            distance = count_cases(wolves, foods)
-            distance_x = distance[0]
-            distance_y = distance[1]
-            food_eaten = foods[key]
-            if distance_x <= 1 and distance_y <=1: 
-                #vérifie que l'action de se nourrir ait un minimum de sens
-                if 100 > player_A[wolves]['life'] and food[foods]['life'] > 0 :
-                    IA_game_eat(wolf, food_eaten, orders)  
+    Parameters: 
+    -----------
+    dic_wolves : dic used (either pos_alpha_omega_A or player_A) (dict)
+    food : dic of food of the game (dict)
+    
+    Version
+    --------
+    specification: Aurélie Genot et Aline Boulanger (v.1 21/04/2022)
+    implementation: Aurélie Genot et Aline Boulanger (v.1 21/04/2022)
+    """
 
+    for wolves in dic_wolves:
+            for foods in food:
+        
+                distance = count_cases(wolves, foods)
+                distance_x = distance[0]
+                distance_y = distance[1]
+                food_eaten = foods[key]
+                wolf = dic_wolves[key]
+                
+                return wolf 
+                return food_eaten 
+             
+
+if distance_x <= 1 and distance_y <=1: 
+    #vérifie que l'action de se nourrir ait un minimum de sens
+    if 100 > dic_wolves[wolves]['life'] and food[foods]['life'] > 0 :
+        IA_game_eat(wolf, food_eaten, orders)  
 
 ## POUR CREER L'ORDRE FOOD 
 def IA_game_eat(wolf, food_eaten, orders):
