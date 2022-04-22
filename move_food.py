@@ -1,10 +1,11 @@
-def move_food(pos, food):
+def move_food(pos, food, order):
     """Search the nearest source of food and make a wolf move toward it
     
     Parameters:
     -----------
     pos: position of the wolf (tuple)
     food: dictionary of food (dict)
+    order: orders (str)
 
     Return:
     -------
@@ -46,7 +47,8 @@ def move_food(pos, food):
         move_y = pos[1] - 1
     else:
         move_y = pos[1]
-        
-        
-    order = str(pos[0]) + '-' + str(pos[1]) + ':@' + str(move_x) + '-' + str(move_y)
-    return order
+    
+    if can_use(order, pos[0], pos[1]):
+        order += str(pos[0]) + '-' + str(pos[1]) + ':@' + str(move_x) + '-' + str(move_y)
+    tuple = (order, (move_x, move_y))
+    return tuple
