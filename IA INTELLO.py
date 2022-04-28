@@ -97,7 +97,7 @@ def wait_for_connection(socket_in, verbose):
         print('   done -> can now receive remote orders from %s:%d\n' % remote_address)
         
     return socket_in            
-def create_connection(your_group, other_group=0, other_IP='127.0.0.1', verbose=False):
+def create_connection(your_group, other_group=0, other_IP='138.48.160.121', verbose=False):
     """Creates a connection with a referee or another group.
     
     Parameters
@@ -1724,6 +1724,6 @@ def play_game(map_path, group_1, type_1, group_2, type_2):
         close_connection(connection)
 
 
-play_game('testfichier.txt', 1, 'AI', 2, 'AI')
+play_game('testfichier.txt', 1, 'AI', 2, 'remote')
 #à rajouter: si un loup sur une case, ne va pas sur celle-ci et si un loup normal autour, l'attaque
-#vidéo sur canva
+
